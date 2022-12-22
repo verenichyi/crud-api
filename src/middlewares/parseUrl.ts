@@ -1,5 +1,5 @@
-import parseQuery from 'src/helpers/parseQuery';
-import parseParams from 'src/helpers/parseParams';
+import parseQuery from 'src/utils/parseQuery';
+import parseParams from 'src/utils/parseParams';
 import { RequestCustom } from 'src/interfaces';
 
 const parseUrl = (baseURL: string, paths: string[], req: RequestCustom): void => {
