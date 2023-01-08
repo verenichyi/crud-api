@@ -5,11 +5,9 @@ const handleError = (error, res) => {
 	if (error instanceof ClientError) {
 		const { status, message } = error;
 
-		res.statusCode = status;
-		res.send({ message });
+		res.send(status, { message });
 	} else {
-		res.statusCode = StatusCodes.InternalServerError;
-		res.send({
+		res.send(StatusCodes.InternalServerError, {
 			message: ServerErrorMessage.InternalServerError
 		});
 	}

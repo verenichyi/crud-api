@@ -4,7 +4,7 @@ import { usersService } from 'src/api/services';
 import { StatusCodes } from 'src/constants';
 import handleError from 'src/utils/handleError';
 import validateRequest from 'src/utils/validateRequest';
-import { ClientError } from '../exceptions/ClientError';
+import { ClientError } from 'src/api/exceptions/ClientError';
 
 const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = usersService;
 
@@ -13,8 +13,7 @@ class UsersController {
 		try {
 			const users = await getAllUsers();
 
-			res.statusCode = StatusCodes.OK;
-			res.send(users);
+			res.send(StatusCodes.OK, users);
 		} catch (error) {
 			handleError(error, res);
 		}
@@ -31,8 +30,7 @@ class UsersController {
 				throw ClientError.NotFound();
 			}
 
-			res.statusCode = StatusCodes.OK;
-			res.send(user);
+			res.send(StatusCodes.OK, user);
 		} catch (error) {
 			handleError(error, res);
 		}
@@ -45,8 +43,7 @@ class UsersController {
 			const userData = { id: uuid.v4(), ...req.body };
 			const user = await createUser(userData);
 
-			res.statusCode = StatusCodes.Created;
-			res.send(user);
+			res.send(StatusCodes.Created, user);
 		} catch (error) {
 			handleError(error, res);
 		}
@@ -66,8 +63,7 @@ class UsersController {
 				throw ClientError.NotFound();
 			}
 
-			res.statusCode = StatusCodes.OK;
-			res.send(updatedUser);
+			res.send(StatusCodes.OK, updatedUser);
 		} catch (error) {
 			handleError(error, res);
 		}

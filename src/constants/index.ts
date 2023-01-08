@@ -2,7 +2,7 @@ import { config } from 'dotenv';
 
 config();
 
-export const MULTI = process.env.MULTI || false;
+export const MULTI = process.env.MULTI;
 export const defaultPort = 5000;
 export const PORT = process.env.PORT || defaultPort;
 export const baseURL = `http://localhost:${PORT}`;
