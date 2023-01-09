@@ -4,10 +4,10 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "start:dev": "cross-env NODE_ENV=development MULTI=true webpack --watch --config webpack.config.js",
+    "start:dev": "cross-env NODE_ENV=development webpack --watch --config webpack.config.js",
     "start:prod": "cross-env NODE_ENV=production webpack --config webpack.config.js && node dist/index.js",
     "start:multi": "cross-env NODE_ENV=production webpack --config webpack.config.js && cross-env MULTI=true node dist/index.js",
-    "test": "jest"
+    "test": "jest --bail --verbose --silent"
   },
   "devDependencies": {
     "@types/jest": "^29.2.4",
