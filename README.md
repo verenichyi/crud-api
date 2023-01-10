@@ -14,28 +14,30 @@ git clone {repository URL}
 ## Installing modules
 
 ```
-yarn install
+npm install
 ```
 
 ## Running application
 
 Run app in development mode:
 ```
-yarn run start:dev
+npm run start:dev
 ```
 
 Run app in production mode:
 ```
-yarn run start:prod
+npm run start:prod
 ```
 
 Run app in cluster mode:
 ```
-yarn run start:multi
+npm run start:multi
 ```
 
 ## Testing
 
 ```
-yarn run test
+npm run test
 ```
+
+**Note**: replace `npm` with `yarn` if you use yarn.
