@@ -41,3 +41,5 @@ npm run test
 ```
 
 **Note**: replace `npm` with `yarn` if you use yarn.
+
+**Note**: rename or copy & rename `.exaple.env` to `.env`.
