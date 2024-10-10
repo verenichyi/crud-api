@@ -10,11 +10,11 @@ const parseUrl = (baseURL: string, paths: string[], req: RequestCustom): void =>
 
     if (Object.keys(params).length) {
         req.pathname = pattern;
-        req.params = params;
     } else {
         req.pathname = pathname;
     }
 
+    req.params = params;
     req.query = query;
 };
 

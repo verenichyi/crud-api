@@ -5,12 +5,12 @@ import { RequestCustom, ResponseCustom } from 'src/interfaces';
 import parseJson from 'src/middlewares/parseJson';
 import parseUrl from 'src/middlewares/parseUrl';
 import bodyParser from 'src/middlewares/bodyParser';
-import { baseURL } from 'src/constants';
+import { baseURL, ClientErrorMessage, StatusCodes } from 'src/constants';
 
 class App {
     private server: Server;
     public emitter: EventEmitter;
-    private routersPaths;
+    private routersPaths: string[];
 
     constructor() {
         this.server = this.createServer();
@@ -26,9 +26,12 @@ class App {
             bodyParser(req).then((body) => {
                 req.body = body;
 
-                const emitted = this.emitter.emit(`${req.pathname}:${req.method}`, req, res);
-                if (!emitted) {
-                    res.send(`Resource doesn't exist`);
+                const isEmitted = this.emitter.emit(`${req.pathname}:${req.method}`, req, res);
+                if (!isEmitted) {
+                    res.statusCode = StatusCodes.NotFound;
+                    res.send({
+                        message: ClientErrorMessage.NotFound
+                    });
                 }
             });
         });

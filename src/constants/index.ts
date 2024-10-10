@@ -10,8 +10,17 @@ export const usersEndpoint = '/api/users';
 export const enum StatusCodes {
     'OK' = 200,
     'Created' = 201,
-    'No Content' = 204,
-    'Bad Request' = 400,
-    'Not Found' = 404,
-    'Internal Server Error' = 500,
+    'NoContent' = 204,
+    'BadRequest' = 400,
+    'NotFound' = 404,
+    'InternalServerError' = 500,
+}
+
+export const enum ClientErrorMessage {
+    'BadRequest' = 'Invalid request',
+    'NotFound' = `Resource doesn't exist`,
+}
+
+export const enum ServerErrorMessage {
+    'InternalServerError' = 'Something went wrong',
 }

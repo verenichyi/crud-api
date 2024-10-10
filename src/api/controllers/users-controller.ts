@@ -1,49 +1,81 @@
+import * as uuid from 'uuid';
 import { RequestCustom, ResponseCustom } from 'src/interfaces';
 import { usersService } from 'src/api/services';
-import * as uuid from 'uuid';
+import { StatusCodes } from 'src/constants';
+import handleError from 'src/utils/handleError';
+import validateRequest from 'src/utils/validateRequest';
 
 const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = usersService;
 
 class UsersController {
     getAllUsers(req: RequestCustom, res: ResponseCustom) {
-        const users = getAllUsers();
-        res.send(users);
+        try {
+            const users = getAllUsers();
+
+            res.statusCode = StatusCodes.OK;
+            res.send(users);
+        } catch (error) {
+            handleError(error, res);
+        }
     }
 
     getUserById(req: RequestCustom, res: ResponseCustom) {
-        const { id } = req.params;
-        const isUuid = uuid.validate(id);
+        try {
+            validateRequest(req);
 
-        const user = getUserById(id);
-        res.send(user);
+            const { id } = req.params;
+            const user = getUserById(id);
+
+            res.statusCode = StatusCodes.OK;
+            res.send(user);
+        } catch (error) {
+            handleError(error, res);
+        }
     }
 
     createUser(req: RequestCustom, res: ResponseCustom) {
-        const user = { id: uuid.v4(), ...req.body };
+        try {
+            validateRequest(req);
 
-        createUser(user);
-        res.send(user);
+            const user = { id: uuid.v4(), ...req.body };
+            createUser(user);
+
+            res.statusCode = StatusCodes.Created;
+            res.send(user);
+        } catch (error) {
+            handleError(error, res);
+        }
     }
 
     updateUser(req: RequestCustom, res: ResponseCustom) {
-        const { id } = req.params;
-        const body = req.body;
+        try {
+            validateRequest(req);
 
-        const isUuid = uuid.validate(id);
+            const { id } = req.params;
+            const body = req.body;
 
-        const user = { id, ...body };
+            const user = { id, ...body };
+            updateUser(user);
 
-        updateUser(user);
-        res.send(user);
+            res.statusCode = StatusCodes.OK;
+            res.send(user);
+        } catch (error) {
+            handleError(error, res);
+        }
     }
 
     deleteUser(req: RequestCustom, res: ResponseCustom) {
-        const { id } = req.params;
+        try {
+            validateRequest(req);
 
-        const isUuid = uuid.validate(id);
+            const { id } = req.params;
+            deleteUser(id);
 
-        deleteUser(id);
-        res.end();
+            res.statusCode = StatusCodes.NoContent;
+            res.end();
+        } catch (error) {
+            handleError(error, res);
+        }
     }
 }
 

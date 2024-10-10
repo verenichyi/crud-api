@@ -1,6 +1,6 @@
 const searchPattern = (source: string, paths: string[]): string => {
     const sourceElements = source.split('/').filter(el => el);
-    let pattern;
+    let pattern = '';
 
     paths.forEach((path) => {
         const patternSlices = [];
