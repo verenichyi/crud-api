@@ -2,6 +2,8 @@ import cluster from 'node:cluster';
 import { IUserSchema } from 'src/interfaces';
 import { usersDb } from 'src/api/db/users-db';
 
+type UserDbResponse = IUserSchema[] | IUserSchema | null;
+
 class UsersService {
     constructor() {
         this.createChanel = this.createChanel.bind(this);
@@ -12,16 +14,16 @@ class UsersService {
         this.deleteUser = this.deleteUser.bind(this);
     }
 
-    private createChanel(message) {
+    private createChanel(message): Promise<UserDbResponse> {
         return new Promise((resolve) => {
             process.send(message);
-            process.on('message', (message) => {
+            process.on('message', (message: UserDbResponse) => {
                 resolve(message);
             });
         });
     }
 
-    public getAllUsers() {
+    getAllUsers(): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
             const message = { method: 'getAllUsers', args: [] };
             return this.createChanel(message);
@@ -30,7 +32,7 @@ class UsersService {
         return usersDb.getAll();
     }
 
-    public getUserById(id: string) {
+    getUserById(id: string): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
             const message = { method: 'getUserById', args: [ id ] };
             return this.createChanel(message);
@@ -39,7 +41,7 @@ class UsersService {
         return usersDb.getOne(id);
     }
 
-    public createUser(user: IUserSchema) {
+    createUser(user: IUserSchema): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
             const message = { method: 'createUser', args: [ user ] };
             return this.createChanel(message);
@@ -48,7 +50,7 @@ class UsersService {
         return usersDb.create(user);
     }
 
-    public updateUser(userData: IUserSchema) {
+    updateUser(userData: IUserSchema): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
             const message = { method: 'updateUser', args: [ userData ] };
             return this.createChanel(message);
@@ -57,7 +59,7 @@ class UsersService {
         return usersDb.update(userData);
     }
 
-    public deleteUser(id: string) {
+    deleteUser(id: string): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
             const message = { method: 'deleteUser', args: [ id ] };
             return this.createChanel(message);

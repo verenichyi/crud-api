@@ -1,23 +1,23 @@
-import { IUser, IUserSchema } from 'src/interfaces';
+import { IUserSchema } from 'src/interfaces';
 
 class UsersDb {
-    constructor(private users: IUser[] = []) {
+    constructor(private users: IUserSchema[] = []) {
     }
 
-    public getAll(): IUser[] {
+    public getAll(): IUserSchema[] {
         return this.users;
     }
 
-    public getOne(id: string): IUser | null {
+    public getOne(id: string): IUserSchema | null {
         return this.users.find((user: IUserSchema) => user.id === id) || null;
     }
 
-    public create(user: IUserSchema): IUser {
+    public create(user: IUserSchema): IUserSchema {
         this.users.push(user);
         return user;
     }
 
-    public update(userData: IUserSchema): IUser | null {
+    public update(userData: IUserSchema): IUserSchema | null {
         const candidate = this.getOne(userData.id);
         if (!candidate) {
             return null;
@@ -34,7 +34,7 @@ class UsersDb {
         return userData;
     }
 
-    public delete(id: string): IUser | null {
+    public delete(id: string): IUserSchema | null {
         const candidate = this.getOne(id);
         if (!candidate) {
             return null;

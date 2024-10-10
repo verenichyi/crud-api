@@ -11,9 +11,8 @@ import parseJson from 'src/middlewares/parseJson';
 class Cluster {
     private app: App;
     private balancer: Server;
-
-    constructor(private count: number = 0, private servers: string[] = []) {
-    }
+    private count: number = 0;
+    private servers: string[] = [];
 
     private createBalancer() {
         return http.createServer((clientReq: RequestCustom, clientRes: ResponseCustom) => {
