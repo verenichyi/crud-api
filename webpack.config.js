@@ -6,7 +6,7 @@ const NODE_ENV = process.env.NODE_ENV;
 const plugins = NODE_ENV === 'development' ? [ new NodemonPlugin() ] : [];
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: './index.ts',
     mode: NODE_ENV,
     target: 'node',
     output: {

@@ -1,5 +1,5 @@
-import searchPattern from 'src/helpers/searchPattern';
-import { IUrlToParamsWithPattern } from 'src/interfaces';
+import searchPattern from './searchPattern';
+import { IUrlToParamsWithPattern } from '../interfaces';
 
 const parseParams = (source: string, paths: string[]): IUrlToParamsWithPattern => {
     const pattern = searchPattern(source, paths);

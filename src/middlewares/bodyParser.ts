@@ -1,6 +1,6 @@
 import { RequestCustom } from 'src/interfaces';
 
-const bodyParser = <T>(req: RequestCustom): Promise<T> | Promise<null> => {
+const bodyParser = <T>(req: RequestCustom): Promise<T | null> => {
     return new Promise((resolve, reject) => {
         try {
             const chunks = [];

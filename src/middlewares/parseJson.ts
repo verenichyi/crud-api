@@ -1,6 +1,6 @@
-import { RequestCustom, ResponseCustom } from 'src/interfaces';
+import { ResponseCustom } from 'src/interfaces';
 
-const parseJson = (req: RequestCustom, res: ResponseCustom): void => {
+const parseJson = (res: ResponseCustom): void => {
     res.send = (data) => {
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(data));

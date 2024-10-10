@@ -1,5 +1,5 @@
-import { RequestCustom, ResponseCustom } from '../interfaces';
-import { usersService } from 'src/services';
+import { RequestCustom, ResponseCustom } from '../../interfaces';
+import { usersService } from '../services';
 
 const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = usersService;
 

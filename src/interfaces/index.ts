@@ -19,5 +19,7 @@ export interface IUrlToParamsWithPattern {
 }
 
 export interface IUser {
-
+    username: string;
+    age: number;
+    hobbies: string[] | [];
 }

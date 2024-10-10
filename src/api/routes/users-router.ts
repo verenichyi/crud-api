@@ -1,6 +1,6 @@
-import Router from 'src/router';
-import { usersEndpoint } from 'src/constants';
-import { usersController } from 'src/controllers';
+import Router from '../../router';
+import { usersEndpoint } from '../../constants';
+import { usersController } from '../controllers';
 
 export const usersRouter = new Router();
 const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = usersController;

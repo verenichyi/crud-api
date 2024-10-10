@@ -5,6 +5,7 @@ import { RequestCustom, ResponseCustom } from 'src/interfaces';
 import parseJson from 'src/middlewares/parseJson';
 import parseUrl from 'src/middlewares/parseUrl';
 import bodyParser from 'src/middlewares/bodyParser';
+import { baseURL } from 'src/constants';
 
 class App {
     private server: Server;
@@ -21,13 +22,13 @@ class App {
 
     private createServer() {
         return http.createServer((req: RequestCustom, res: ResponseCustom) => {
-            parseUrl(`http://localhost:5000`, this.routersPaths, req);
-            parseJson(req, res);
+            parseUrl(baseURL, this.routersPaths, req);
+            parseJson(res);
 
             bodyParser(req).then((body) => {
                 req.body = body;
-                const emitted = this.emitter.emit(`${req.pathname}:${req.method}`, req, res);
 
+                const emitted = this.emitter.emit(`${req.pathname}:${req.method}`, req, res);
                 if (!emitted) {
                     res.send(`Resource doesn't exist`);
                 }
