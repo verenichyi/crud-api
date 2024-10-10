@@ -1,24 +1,35 @@
-import { IUser } from '../../interfaces';
+import { IUser, IUserSchema } from 'src/interfaces';
+import users from 'src/api/db/users';
 
 class UsersService {
     getAllUsers() {
-        return [ { id: 1, username: 'user' } ];
+        return users;
     }
 
     getUserById(id: string) {
-        return [ { id, username: 'user' } ];
+        return users.find((user: IUserSchema) => user.id === id);
     }
 
-    createUser(body: IUser) {
-        return body;
+    createUser(user: IUser) {
+        users.push(user);
     }
 
-    updateUser(id: string, body: IUser) {
-        return { id, body };
+    updateUser(userData: IUserSchema) {
+        users.forEach((user: IUserSchema) => {
+            if (user.id === userData.id) {
+                Object.keys(user).forEach((key) => {
+                    user[key] = userData[key];
+                });
+            }
+        });
     }
 
     deleteUser(id: string) {
-        return id;
+        users.forEach((user: IUserSchema, index) => {
+            if (user.id === id) {
+                users.splice(index, 1);
+            }
+        });
     }
 }
 

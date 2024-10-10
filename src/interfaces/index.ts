@@ -23,3 +23,10 @@ export interface IUser {
     age: number;
     hobbies: string[] | [];
 }
+
+export interface IUserSchema {
+    id: string;
+    username: string;
+    age: number;
+    hobbies: string[] | [];
+}
