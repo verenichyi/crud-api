@@ -10,13 +10,11 @@ import { baseURL } from 'src/constants';
 class App {
     private server: Server;
     public emitter: EventEmitter;
-    private middlewares;
     private routersPaths;
 
     constructor() {
         this.server = this.createServer();
         this.emitter = new EventEmitter();
-        this.middlewares = [];
         this.routersPaths = [];
     }
 
@@ -36,17 +34,15 @@ class App {
         });
     }
 
-    listen(PORT, callback) {
-        this.server.listen(PORT, callback);
+    listen(PORT, cb) {
+        this.server.listen(PORT, cb);
     }
 
     addRouter(router: Router) {
-        Object.keys(router.endpoints).forEach((path) => {
+        Object.entries(router.endpoints).forEach(([ path, methods ]) => {
             this.routersPaths.push(path);
-            const methods = router.endpoints[path];
 
-            Object.keys(methods).forEach((method) => {
-                const handler = methods[method];
+            Object.entries(methods).forEach(([ method, handler ]) => {
                 this.emitter.on(`${path}:${method}`, (req: RequestCustom, res: ResponseCustom) => {
                     handler(req, res);
                 });
