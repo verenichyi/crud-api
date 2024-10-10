@@ -17,3 +17,7 @@ export interface IUrlToParamsWithPattern {
         [key: string]: string
     }
 }
+
+export interface IUser {
+
+}

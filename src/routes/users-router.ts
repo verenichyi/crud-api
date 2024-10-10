@@ -1,30 +1,12 @@
 import Router from 'src/router';
 import { usersEndpoint } from 'src/constants';
-import { RequestCustom, ResponseCustom } from 'src/interfaces';
+import { usersController } from 'src/controllers';
 
-const usersRouter = new Router();
+export const usersRouter = new Router();
+const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = usersController;
 
-usersRouter.get(usersEndpoint, (req: RequestCustom, res: ResponseCustom) => {
-    res.send([ { id: 1, username: 'user' } ]);
-});
-
-usersRouter.get(usersEndpoint + '/:id', (req: RequestCustom, res: ResponseCustom) => {
-    const { id } = req.params;
-    res.send({ id });
-});
-
-usersRouter.post(usersEndpoint, (req: RequestCustom, res: ResponseCustom) => {
-    res.send(req.body);
-});
-
-usersRouter.put(usersEndpoint + '/:id', (req: RequestCustom, res: ResponseCustom) => {
-    const { id } = req.params;
-    res.send({ id });
-});
-
-usersRouter.delete(usersEndpoint + '/:id', (req: RequestCustom, res: ResponseCustom) => {
-    const { id } = req.params;
-    res.send({ id });
-});
-
-export default usersRouter;
+usersRouter.get(usersEndpoint, getAllUsers);
+usersRouter.get(usersEndpoint + '/:id', getUserById);
+usersRouter.post(usersEndpoint, createUser);
+usersRouter.put(usersEndpoint + '/:id', updateUser);
+usersRouter.delete(usersEndpoint + '/:id', deleteUser);
