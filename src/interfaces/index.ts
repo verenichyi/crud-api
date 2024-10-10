@@ -8,10 +8,10 @@ export interface RequestCustom extends IncomingMessage {
 }
 
 export interface ResponseCustom extends ServerResponse {
-    send?: (data: any) => void;
+    send?: (statusCode: number, data: any) => void;
 }
 
-export interface IUrlToParamsWithPattern {
+export interface IParsedParamsWithPattern {
     pattern: string,
     params: {
         [key: string]: string
@@ -21,12 +21,12 @@ export interface IUrlToParamsWithPattern {
 export interface IUser {
     username: string;
     age: number;
-    hobbies: string[] | [];
+    hobbies: string[];
 }
 
 export interface IUserSchema {
     id: string;
     username: string;
     age: number;
-    hobbies: string[] | [];
+    hobbies: string[];
 }

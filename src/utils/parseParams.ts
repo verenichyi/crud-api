@@ -1,7 +1,7 @@
-import searchPattern from './searchPattern';
-import { IUrlToParamsWithPattern } from '../interfaces';
+import searchPattern from 'src/utils/searchPattern';
+import { IParsedParamsWithPattern } from 'src/interfaces';
 
-const parseParams = (source: string, paths: string[]): IUrlToParamsWithPattern => {
+const parseParams = (source: string, paths: string[]): IParsedParamsWithPattern => {
     const pattern = searchPattern(source, paths);
 
     const sourceElements = source.split('/').filter(el => el);

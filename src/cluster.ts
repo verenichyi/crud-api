@@ -20,16 +20,15 @@ class Cluster {
             parseJson(clientRes);
             const url = this.servers[this.count] + clientReq.url;
 
-            const proxy = http.request(url, { method: clientReq.method, headers: clientReq.headers }, async (res) => {
+            const proxy = http.request(url, { method: clientReq.method, headers: clientReq.headers }, (res) => {
                 clientRes.writeHead(res.statusCode, res.headers);
                 res.pipe(clientRes);
             });
 
             clientReq.pipe(proxy);
 
-            proxy.on('error', (error) => {
-                clientRes.statusCode = StatusCodes.InternalServerError;
-                clientRes.send({
+            proxy.on('error', () => {
+                clientRes.send(StatusCodes.InternalServerError, {
                     message: ServerErrorMessage.InternalServerError
                 });
             });
@@ -56,8 +55,9 @@ class Cluster {
 
             cluster.on('exit', (worker, code) => {
                 if (code !== 0 && !worker.exitedAfterDisconnect) {
-                    console.log(`Worker ${worker.id} crashed.` + ' Starting a new worker...');
-                    cluster.fork();
+                    console.log(`Worker ${worker.id} crashed. Starting a new worker...`);
+                    const workerPort = +PORT + this.count;
+                    cluster.fork({ workerPort });
                 }
             });
 

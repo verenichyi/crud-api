@@ -4,7 +4,7 @@ import Router from 'src/router';
 import { RequestCustom, ResponseCustom } from 'src/interfaces';
 import parseJson from 'src/middlewares/parseJson';
 import parseUrl from 'src/middlewares/parseUrl';
-import bodyParser from 'src/middlewares/bodyParser';
+import parseBody from 'src/middlewares/parseBody';
 import { baseURL, ClientErrorMessage, StatusCodes } from 'src/constants';
 
 class App extends EventEmitter {
@@ -12,7 +12,7 @@ class App extends EventEmitter {
     private routersPaths: string[];
 
     constructor() {
-        super()
+        super();
         this.server = this.createServer();
         this.routersPaths = [];
     }
@@ -22,13 +22,12 @@ class App extends EventEmitter {
             parseUrl(baseURL, this.routersPaths, req);
             parseJson(res);
 
-            bodyParser(req).then((body) => {
+            parseBody(req).then((body) => {
                 req.body = body;
 
                 const isEmitted = this.emit(`${req.pathname}:${req.method}`, req, res);
                 if (!isEmitted) {
-                    res.statusCode = StatusCodes.NotFound;
-                    res.send({
+                    res.send(StatusCodes.NotFound, {
                         message: ClientErrorMessage.NotFound
                     });
                 }
