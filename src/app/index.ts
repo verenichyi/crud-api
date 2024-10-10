@@ -7,14 +7,13 @@ import parseUrl from 'src/middlewares/parseUrl';
 import bodyParser from 'src/middlewares/bodyParser';
 import { baseURL, ClientErrorMessage, StatusCodes } from 'src/constants';
 
-class App {
+class App extends EventEmitter {
     private server: Server;
-    public emitter: EventEmitter;
     private routersPaths: string[];
 
     constructor() {
+        super()
         this.server = this.createServer();
-        this.emitter = new EventEmitter();
         this.routersPaths = [];
     }
 
@@ -26,7 +25,7 @@ class App {
             bodyParser(req).then((body) => {
                 req.body = body;
 
-                const isEmitted = this.emitter.emit(`${req.pathname}:${req.method}`, req, res);
+                const isEmitted = this.emit(`${req.pathname}:${req.method}`, req, res);
                 if (!isEmitted) {
                     res.statusCode = StatusCodes.NotFound;
                     res.send({
@@ -46,7 +45,7 @@ class App {
             this.routersPaths.push(path);
 
             Object.entries(methods).forEach(([ method, handler ]) => {
-                this.emitter.on(`${path}:${method}`, (req: RequestCustom, res: ResponseCustom) => {
+                this.on(`${path}:${method}`, (req: RequestCustom, res: ResponseCustom) => {
                     handler(req, res);
                 });
             });

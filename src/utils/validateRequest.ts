@@ -1,14 +1,6 @@
 import * as uuid from 'uuid';
-import users from 'src/api/db/users';
-import { IUser, IUserSchema, RequestCustom } from 'src/interfaces';
+import { IUser, RequestCustom } from 'src/interfaces';
 import { ClientError } from 'src/api/exceptions/ClientError';
-
-const checkExistence = (id: string): void => {
-    const user = users.find((user: IUserSchema) => user.id === id);
-    if (!user) {
-        throw ClientError.NotFound();
-    }
-};
 
 const validateUuid = (id: string): void => {
     const isUuid = uuid.validate(id);
@@ -34,7 +26,6 @@ const validateRequest = (req: RequestCustom): void => {
 
     if (id) {
         validateUuid(id);
-        checkExistence(id);
     }
 
     if (body) {

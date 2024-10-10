@@ -1,3 +1,5 @@
-import { server } from './src/server';
+import { server } from 'src/server';
+import { serverWithCluster } from 'src/cluster';
+import { MULTI } from 'src/constants';
 
-server.start();
+MULTI ? serverWithCluster.start() : server.start();

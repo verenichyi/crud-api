@@ -4,13 +4,14 @@ import { usersService } from 'src/api/services';
 import { StatusCodes } from 'src/constants';
 import handleError from 'src/utils/handleError';
 import validateRequest from 'src/utils/validateRequest';
+import { ClientError } from '../exceptions/ClientError';
 
 const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = usersService;
 
 class UsersController {
-    getAllUsers(req: RequestCustom, res: ResponseCustom) {
+    async getAllUsers(req: RequestCustom, res: ResponseCustom): Promise<void> {
         try {
-            const users = getAllUsers();
+            const users = await getAllUsers();
 
             res.statusCode = StatusCodes.OK;
             res.send(users);
@@ -19,12 +20,16 @@ class UsersController {
         }
     }
 
-    getUserById(req: RequestCustom, res: ResponseCustom) {
+    async getUserById(req: RequestCustom, res: ResponseCustom): Promise<void> {
         try {
             validateRequest(req);
 
             const { id } = req.params;
-            const user = getUserById(id);
+            const user = await getUserById(id);
+
+            if (!user) {
+                throw ClientError.NotFound();
+            }
 
             res.statusCode = StatusCodes.OK;
             res.send(user);
@@ -33,12 +38,12 @@ class UsersController {
         }
     }
 
-    createUser(req: RequestCustom, res: ResponseCustom) {
+    async createUser(req: RequestCustom, res: ResponseCustom): Promise<void> {
         try {
             validateRequest(req);
 
-            const user = { id: uuid.v4(), ...req.body };
-            createUser(user);
+            const userData = { id: uuid.v4(), ...req.body };
+            const user = await createUser(userData);
 
             res.statusCode = StatusCodes.Created;
             res.send(user);
@@ -47,29 +52,37 @@ class UsersController {
         }
     }
 
-    updateUser(req: RequestCustom, res: ResponseCustom) {
+    async updateUser(req: RequestCustom, res: ResponseCustom): Promise<void> {
         try {
             validateRequest(req);
 
             const { id } = req.params;
             const body = req.body;
 
-            const user = { id, ...body };
-            updateUser(user);
+            const userData = { id, ...body };
+            const updatedUser = await updateUser(userData);
+
+            if (!updatedUser) {
+                throw ClientError.NotFound();
+            }
 
             res.statusCode = StatusCodes.OK;
-            res.send(user);
+            res.send(updatedUser);
         } catch (error) {
             handleError(error, res);
         }
     }
 
-    deleteUser(req: RequestCustom, res: ResponseCustom) {
+    async deleteUser(req: RequestCustom, res: ResponseCustom): Promise<void> {
         try {
             validateRequest(req);
 
             const { id } = req.params;
-            deleteUser(id);
+            const deletedUser = await deleteUser(id);
+
+            if (!deletedUser) {
+                throw ClientError.NotFound();
+            }
 
             res.statusCode = StatusCodes.NoContent;
             res.end();
