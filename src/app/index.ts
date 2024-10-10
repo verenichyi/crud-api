@@ -8,7 +8,7 @@ import parseBody from 'src/middlewares/parseBody';
 import { baseURL, ClientErrorMessage, StatusCodes } from 'src/constants';
 
 class App extends EventEmitter {
-    private server: Server;
+    public server: Server;
     private routersPaths: string[];
 
     constructor() {
