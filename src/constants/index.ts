@@ -5,6 +5,7 @@ config();
 export const MULTI = process.env.MULTI;
 export const defaultPort = 5000;
 export const PORT = process.env.PORT || defaultPort;
+export const TEST_PORT = 5001;
 export const baseURL = `http://localhost:${PORT}`;
 export const usersEndpoint = '/api/users';
 

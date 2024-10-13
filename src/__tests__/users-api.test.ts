@@ -2,7 +2,7 @@ import supertest from 'supertest';
 import * as uuid from 'uuid';
 import App from 'src/app';
 import { usersRouter } from 'src/api/routes/users-router';
-import { PORT, usersEndpoint } from 'src/constants';
+import { TEST_PORT, usersEndpoint } from 'src/constants';
 import { IUser } from 'src/interfaces';
 
 const mockUser: IUser = {
@@ -14,7 +14,7 @@ const mockUser: IUser = {
 describe('Users API', () => {
     const app = new App();
     app.addRouter(usersRouter);
-    app.listen(+PORT, () => {
+    app.listen(+TEST_PORT, () => {
     });
 
     const server = supertest(app.server);
