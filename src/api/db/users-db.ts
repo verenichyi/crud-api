@@ -1,6 +1,6 @@
 import { IUserSchema } from 'src/interfaces';
 
-class UsersDb {
+export class UsersDb {
     constructor(private users: IUserSchema[] = []) {
     }
 

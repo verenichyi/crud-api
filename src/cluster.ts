@@ -5,14 +5,15 @@ import App from 'src/app';
 import { usersRouter } from 'src/api/routes/users-router';
 import { PORT, ServerErrorMessage, StatusCodes } from 'src/constants';
 import { RequestCustom, ResponseCustom } from 'src/interfaces';
-import { usersService } from 'src/api/services';
 import parseJson from 'src/middlewares/parseJson';
+import { usersDb, UsersDb } from "./api/db/users-db";
 
 class Cluster {
     private app: App;
     private balancer: Server;
     private count: number = 0;
     private servers: string[] = [];
+    private usersDb: UsersDb;
 
     private createBalancer() {
         return http.createServer((clientReq: RequestCustom, clientRes: ResponseCustom) => {
@@ -49,6 +50,8 @@ class Cluster {
                 this.servers.push(`http://localhost:${workerPort}`);
             }
 
+            this.usersDb = usersDb;
+
             this.balancer = this.createBalancer();
             this.balancer.listen(PORT, () => console.log(`Server has been started on http://localhost:${PORT}, started process id: ${process.pid}`));
 
@@ -61,7 +64,8 @@ class Cluster {
             });
 
             cluster.on('message', (worker, message) => {
-                const data = usersService[message.method](...message.args);
+                console.log(`Request to worker ${worker.process.pid}`)
+                const data = this.usersDb[message.method](...message.args);
                 worker.send(data);
             });
         } else {

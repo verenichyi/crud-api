@@ -25,7 +25,7 @@ class UsersService {
 
     getAllUsers(): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
-            const message = { method: 'getAllUsers', args: [] };
+            const message = { method: 'getAll', args: [] };
             return this.createChanel(message);
         }
 
@@ -34,7 +34,7 @@ class UsersService {
 
     getUserById(id: string): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
-            const message = { method: 'getUserById', args: [ id ] };
+            const message = { method: 'getOne', args: [ id ] };
             return this.createChanel(message);
         }
 
@@ -43,7 +43,7 @@ class UsersService {
 
     createUser(user: IUserSchema): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
-            const message = { method: 'createUser', args: [ user ] };
+            const message = { method: 'create', args: [ user ] };
             return this.createChanel(message);
         }
 
@@ -52,7 +52,7 @@ class UsersService {
 
     updateUser(userData: IUserSchema): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
-            const message = { method: 'updateUser', args: [ userData ] };
+            const message = { method: 'update', args: [ userData ] };
             return this.createChanel(message);
         }
 
@@ -61,7 +61,7 @@ class UsersService {
 
     deleteUser(id: string): Promise<UserDbResponse> | UserDbResponse {
         if (cluster.isWorker) {
-            const message = { method: 'deleteUser', args: [ id ] };
+            const message = { method: 'delete', args: [ id ] };
             return this.createChanel(message);
         }
 
